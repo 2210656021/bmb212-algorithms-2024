@@ -1,0 +1,25 @@
+class Solution {
+    public int getMinimumDifference(TreeNode root) {
+       if (root == null) return 0;
+
+List<Integer> list =new ArrayList<Integer>();
+dfs(root, list);
+
+int minAbsDiff= Integer.MAX_VALUE;
+
+for(int i=0;i<list.size()-1; i++) {
+    minAbsDiff = Math.min(minAbsDiff, Math.abs(list.get(i+1) - list.get(i)));
+}
+return minAbsDiff;
+
+}
+
+private void dfs(TreeNode root, List<Integer> list) {
+    if (root == null) return;
+
+dfs(root.left, list);
+list.add(root.val);
+dfs(root.right, list); 
+
+    }
+}
