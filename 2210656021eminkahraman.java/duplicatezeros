@@ -1,0 +1,41 @@
+class Solution {
+
+public void duplicateZeros(int [] arr) {
+
+int zeros=0;
+
+for(int x: arr){
+
+if(x==0){
+
+zeros++;
+
+}
+}
+
+int i=arr.length-1;
+
+int j=arr.length-1+ zeros;
+
+while(i<j){
+replace(i,j,arr);
+j--;
+if(arr[i]==0){
+
+replace(i,j,arr);
+j--;
+}
+
+i--;
+
+}
+
+}
+
+private void replace(int i, int j, int [] arr){
+    if(j<arr.length){
+
+arr[j]=arr[i];
+}
+}
+}
