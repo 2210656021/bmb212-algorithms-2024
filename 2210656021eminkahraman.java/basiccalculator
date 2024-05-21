@@ -1,1 +1,83 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+
+	public static void main(String[] args) {	
+        String input = "(1+(4+5+2)-3)+(6+8)";
+		System.out.println(evaluate(input));
+	}
+
+	public static int evaluate(String s) {
+		int result = 0;
+		String operation = "";
+		List<Character> openBrackets = new ArrayList<Character>();
+		List<Character> closeBrackets = new ArrayList<Character>();
+		StringBuilder innerInput = new StringBuilder();
+		int openBraketCount=0;
+		ArrayList<String> listDeneme = new ArrayList<>();
+		
+		for (int i = 0; i < s.length(); i++) {
+			char inputChar = s.charAt(i);
+			if (openBrackets.isEmpty()) {
+				if (Character.isDigit(inputChar)) {
+
+					if (operation == "" && result == 0) {
+						result = Character.digit(inputChar, Character.MAX_RADIX);
+						continue;
+					} else if (operation != "") {
+						result = calculateWithOperation(operation, Character.digit(inputChar, Character.MAX_RADIX),
+								result);
+						continue;
+					}
+				}
+				
+				if (inputChar == '+' || inputChar == '-') {
+					operation = Character.toString(inputChar);
+					continue;
+				}
+			}
+			if (inputChar == '(') {
+				//openBrackets.add(inputChar);
+				
+				listDeneme.add(openBraketCount, innerInput.toString());
+				innerInput.append(inputChar);
+				continue;
+			}
+			if (inputChar == ')') {
+				closeBrackets.add(inputChar);
+				if (openBrackets.size() == closeBrackets.size()) {
+					openBrackets.remove((Character) '(');
+					closeBrackets.remove((Character) ')');
+					int evalResult = (int) Math.round(evaluate(innerInput.toString()));
+					result = calculateWithOperation(operation, evalResult, result);
+					innerInput.setLength(0);
+				}
+				if (openBrackets.size() > closeBrackets.size()) {
+					continue;
+				}
+			} else {
+				innerInput.append(inputChar);
+				listDeneme.add(openBraketCount, innerInput.toString());
+			}
+		}
+		return result;
+	}
+	
+	public static int calculateWithOperation(String operation, int inputChar, int output) {
+		switch (operation) {
+		case "+":
+			output = output + inputChar;
+			break;
+
+		case "-":
+			output = output - inputChar;
+			break;
+
+		default:
+			break;
+		}
+		return output;
+	}
+}
 
